@@ -1,0 +1,20 @@
+.token.keyword
+{
+    color: brown;
+}
+.token.color
+{
+    color: green;
+}
+.token.constant.direction
+{
+    color: blueviolet;
+}
+.token.numeric
+{
+    color: chocolate;
+}
+
+.input[type="number" i]{
+    width: 5rem
+}

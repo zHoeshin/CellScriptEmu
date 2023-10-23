@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <script src="build.js"></script>
+</head>
+<body>
+    <canvas id="canvas" style="width: 512px; height: 512px; background-color: gray;" width="512" height="512"></canvas>
+
+    <script></script>
+
+    <br>
+
+    <button onclick="if(running){return;}interval = setInterval(() => {
+        STEP()
+    }, 100); running = true;">Start</button>
+    <button onclick="STEP()">Step</button>
+    <button onclick="clearInterval(interval); running = false">Pause</button>
+    <button>Reset</button>
+
+    <br>
+    
+    <button onclick="update()">Update</button>
+    <span>Selected: </span>
+    <select id="selection">
+        <option>Nothing</option>    
+    </select>
+    <button onclick="
+    var rect = document.getElementById('canvas').getBoundingClientRect();
+    for(let i = 0; i < WIDTH; i++){
+        for(let j = 0; j < HEIGHT; j++){
+            oldmap[i][j]=selected
+            ctx.fillStyle = TYPES[selected].color;
+            ctx.fillRect(i * (rect.width / WIDTH), j * (rect.height / HEIGHT), rect.width / WIDTH, rect.height / HEIGHT)
+        }
+    }">Fill</button>
+    <span>Default: </span>
+    <select id="selectdefault">
+        <option>Nothing</option>    
+    </select>
+    <br>
+
+    <span>Examples: </span>
+    <select id="examples">
+        <option value="0">Conway's Game of Life</option>
+        <option value="1">Wireworld</option>
+    </select>
+    <button onclick="loadExample()">Load example</button>
+
+    <br>
+
+    <div>
+        <span>Screen Width</span><input id="w" class="input number" type="number" value="16">
+        <span>Screen Height</span><input id="h" class="input number" type="number" value="16">
+        <span>Cell size(px)</span><input id="size" class="input number" type="number" value="16">
+        <span>Wrap aroung the map?</span><input id="wrap" class="input number" type="checkbox" value="1">
+        <button onclick="
+        WIDTH = document.getElementById('w').value
+        HEIGHT = document.getElementById('h').value
+        let size = document.getElementById('size').value
+        canvas.style = `width: ${WIDTH * size}px; height: ${HEIGHT * size}px; background-color: gray;`
+        WORLDWRAP = document.getElementById('wrap').checked
+
+        generateEmptyMaps()
+        ">Apply</button>
+    </div>
+    
+    <pre id="code" style="width: 100%; height: 25vw"></pre>
+
+    <script src="index.js"></script>
+
+    
+    <script src="ace.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        editor = ace.edit("code");
+        editor.setTheme("ace/theme/chaos");
+        editor.session.setMode("ace/mode/cellscript");
+        editor.setValue(`element Live {
+    color #aeaebb;
+
+    rules {
+        ifnot [2..3] Live at DIR.ANY => Dead;
+    }
+}
+
+element Dead {
+    color #161616;
+
+    rules {
+        if 3 Live at DIR.ANY => Live;
+    }
+}
+`, -1);
+update();
+setupExampleLoader();
+let running = false
+    </script>
+</body>
