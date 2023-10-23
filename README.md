@@ -68,4 +68,4 @@ The `DIR` constant defines which neighbor cells are being checked in a condition
 
 Also `DIR` takes values of `CROSS`, `X` (`DIR.CROSS`) for checking only corner neighbor cells and `PLUS` (`DIR.PLUS`) for checking all non-corner neighbor cells.
 
-For checking all the cells aroung use `DIR.ALL` or `DIR.ANY`.
+For checking all the cells around use `DIR.ALL` or `DIR.ANY`.
