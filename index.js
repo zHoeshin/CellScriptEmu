@@ -52,7 +52,7 @@ function getNeighborCells(x, y, rollaround = false){
             if(rollaround == false && y+j < 0) {neighborsmap.push(DEFAULTCELLTYPE); continue}
             if(rollaround == false && y+j >= HEIGHT) {neighborsmap.push(DEFAULTCELLTYPE); continue}
 
-            neighborsmap.push(oldmap[(x + i + WIDTH)%WIDTH][(y + j + HEIGHT)%HEIGHT])
+            neighborsmap.push(oldmap[(x + i + HEIGHT)%HEIGHT][(y + j + WIDTH)%WIDTH])
         }
     }
 
@@ -131,8 +131,8 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 function prepare(){
-    for(let i = 0; i < WIDTH; i++){
-        for(let j = 0; j < HEIGHT; j++){
+    for(let i = 0; i < HEIGHT; i++){
+        for(let j = 0; j < WIDTH; j++){
             if(TYPES.length <= DEFAULTCELLTYPE) break
 
             ctx.fillStyle = TYPES[DEFAULTCELLTYPE].color;
@@ -142,8 +142,8 @@ function prepare(){
 }
 
 function STEP(){
-    for(let i = 0; i < WIDTH; i++){
-        for(let j = 0; j < HEIGHT; j++){
+    for(let i = 0; i < HEIGHT; i++){
+        for(let j = 0; j < WIDTH; j++){
             let nMap = getNeighborCells(i, j, WORLDWRAP)
             if(oldmap[i][j] >= TYPES.length) continue
             let newtype = TYPES[oldmap[i][j]].check(nMap, [i, j])
@@ -164,8 +164,10 @@ function STEP(){
 document.getElementById('canvas').onclick = function(e) {
     // e = Mouse click event.
     var rect = e.target.getBoundingClientRect();
-    var x = Math.floor((e.clientX - rect.left) / rect.width * WIDTH); //x position within the element.
-    var y = Math.floor((e.clientY - rect.top) / rect.height * HEIGHT);  //y position within the element.
+    var x = Math.floor((e.clientX - rect.left) / (rect.width / WIDTH)); //x position within the element.
+    var y = Math.floor((e.clientY - rect.top) / (rect.height / HEIGHT));  //y position within the element.
+    
+    console.log(rect, x, y)
 
     oldmap[y][x] = selected
 
@@ -273,8 +275,8 @@ element ChargeTrace {
     document.getElementById('selectdefault').value = DEFAULTCELLTYPE
     
     var rect = document.getElementById('canvas').getBoundingClientRect();
-    for(let i = 0; i < WIDTH; i++){
-        for(let j = 0; j < HEIGHT; j++){
+    for(let i = 0; i < HEIGHT; i++){
+        for(let j = 0; j < WIDTH; j++){
             oldmap[i][j] = DEFAULTCELLTYPE
             ctx.fillStyle = TYPES[DEFAULTCELLTYPE].color;
             ctx.fillRect(i * (rect.width / WIDTH), j * (rect.height / HEIGHT), rect.width / WIDTH, rect.height / HEIGHT)
