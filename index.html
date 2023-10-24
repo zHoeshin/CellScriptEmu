@@ -26,8 +26,8 @@
     </select>
     <button onclick="
     var rect = document.getElementById('canvas').getBoundingClientRect();
-    for(let i = 0; i < WIDTH; i++){
-        for(let j = 0; j < HEIGHT; j++){
+    for(let i = 0; i < HEIGHT; i++){
+        for(let j = 0; j < WIDTH; j++){
             oldmap[i][j]=selected
             ctx.fillStyle = TYPES[selected].color;
             ctx.fillRect(i * (rect.width / WIDTH), j * (rect.height / HEIGHT), rect.width / WIDTH, rect.height / HEIGHT)
@@ -64,9 +64,11 @@
             resizeMaps()
             let size = Number(document.getElementById('size').value)
             canvas.style = `width: ${WIDTH * size}px; height: ${HEIGHT * size}px; background-color: gray;`
+            canvas.width = WIDTH * size
+            canvas.height = HEIGHT * size
             
-            for(let i = 0; i < WIDTH; i++){
-                for(let j = 0; j < HEIGHT; j++){
+            for(let i = 0; i < HEIGHT; i++){
+                for(let j = 0; j < WIDTH; j++){
                     ctx.fillStyle = TYPES[oldmap[i][j]].color
                     ctx.fillRect(j * (canvas.width / WIDTH), i * (canvas.height / HEIGHT), canvas.width / WIDTH, canvas.height / HEIGHT)
                 }
