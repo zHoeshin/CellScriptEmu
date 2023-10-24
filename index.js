@@ -22,6 +22,25 @@ function generateEmptyMaps(){
 }
 generateEmptyMaps()
 
+function resizeMaps(){
+    while(map.length < HEIGHT){
+        map.push([])
+        oldmap.push([])
+    }
+    map.length = HEIGHT
+    oldmap.length = HEIGHT
+
+    console.log(map.length, map[0].length, WIDTH)
+    for(let i = 0; i < map.length; i++){
+        while(map[i].length < WIDTH){
+            map[i].push(DEFAULTCELLTYPE)
+            oldmap[i].push(DEFAULTCELLTYPE)
+        }
+        map[i].length = WIDTH
+        oldmap[i].length = WIDTH
+    }
+}
+
 function getNeighborCells(x, y, rollaround = false){
     let neighborsmap = []
     for(let i = -1; i < 2; i++){
@@ -164,10 +183,10 @@ function update(){
     sel.innerHTML = ''
     seld.innerHTML = ''
     sel.onchange = (event) => {
-        selected = event.target.value;
+        selected = Number(event.target.value);
     }
     seld.onchange = (event) => {
-        DEFAULTCELLTYPE = event.target.value;
+        DEFAULTCELLTYPE = Number(event.target.value);
     }
     for(let i = 0; i < TYPES.length; i++){
         sel.innerHTML += `<option value=${i}>${TYPES[i].name}</option>`
@@ -179,7 +198,7 @@ let selectedexample = 0
 function setupExampleLoader(){
     let esel = document.getElementById('examples')
     esel.onchange = (event) => {
-        selectedexample = event.target.value;
+        selectedexample = Number(event.target.value);
     }
 }
 
@@ -203,8 +222,12 @@ element Dead {
 }`)
             update();
             for(let i = 0; i < TYPES.length; i++){
-                if(TYPES[i].name == "Live") selected = i
-                if(TYPES[i].name == "Dead") DEFAULTCELLTYPE = i
+                if(TYPES[i].name == "Live") {
+                    selected = i
+                }
+                if(TYPES[i].name == "Dead") {
+                    DEFAULTCELLTYPE = i
+                }
             }
             break;
 
@@ -241,12 +264,14 @@ element ChargeTrace {
             for(let i = 0; i < TYPES.length; i++){
                 if(TYPES[i].name == "Wire") selected = i
                 if(TYPES[i].name == "_Empty") DEFAULTCELLTYPE = i
-                console.log(selected, DEFAULTCELLTYPE)
             }
             break;
     }
+
     
-    console.log(DEFAULTCELLTYPE)
+    document.getElementById('selection').value = selected
+    document.getElementById('selectdefault').value = DEFAULTCELLTYPE
+    
     var rect = document.getElementById('canvas').getBoundingClientRect();
     for(let i = 0; i < WIDTH; i++){
         for(let j = 0; j < HEIGHT; j++){

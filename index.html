@@ -54,13 +54,24 @@
         <span>Cell size(px)</span><input id="size" class="input number" type="number" value="32">
         <span>Wrap aroung the map?</span><input id="wrap" class="input number" type="checkbox" checked="true">
         <button onclick="
-        WIDTH = document.getElementById('w').value
-        HEIGHT = document.getElementById('h').value
-        let size = document.getElementById('size').value
-        canvas.style = `width: ${WIDTH * size}px; height: ${HEIGHT * size}px; background-color: gray;`
+        W = Number(document.getElementById('w').value)
+        H = Number(document.getElementById('h').value)
         WORLDWRAP = document.getElementById('wrap').checked
 
-        generateEmptyMaps()
+        if(W != WIDTH | H != HEIGHT){
+            WIDTH = W
+            HEIGHT = H
+            resizeMaps()
+            let size = Number(document.getElementById('size').value)
+            canvas.style = `width: ${WIDTH * size}px; height: ${HEIGHT * size}px; background-color: gray;`
+            
+            for(let i = 0; i < WIDTH; i++){
+                for(let j = 0; j < HEIGHT; j++){
+                    ctx.fillStyle = TYPES[oldmap[i][j]].color
+                    ctx.fillRect(j * (canvas.width / WIDTH), i * (canvas.height / HEIGHT), canvas.width / WIDTH, canvas.height / HEIGHT)
+                }
+            }
+        }
         ">Apply</button>
     </div>
     
@@ -94,6 +105,5 @@ update();
 setupExampleLoader();
 let running = false
     </script>
-
     <a href="https://github.com/zHoeshin/CellScriptEmu/blob/main/README.md" target="_blank">Short documentation</a>
 </body>
