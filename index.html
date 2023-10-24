@@ -58,17 +58,17 @@
         H = Number(document.getElementById('h').value)
         WORLDWRAP = document.getElementById('wrap').checked
 
-        let size = Number(document.getElementById('size').value)
-        canvas.style = `width: ${WIDTH * size}px; height: ${HEIGHT * size}px;`
-        canvas.width = WIDTH * size
-        canvas.height = HEIGHT * size
-
         if(W != WIDTH | H != HEIGHT){
             WIDTH = W
             HEIGHT = H
             resizeMaps()
         }
             
+
+        let size = Number(document.getElementById('size').value)
+        canvas.style = `width: ${WIDTH * size}px; height: ${HEIGHT * size}px;`
+        canvas.width = WIDTH * size
+        canvas.height = HEIGHT * size
         for(let i = 0; i < HEIGHT; i++){
                 for(let j = 0; j < WIDTH; j++){
                     ctx.fillStyle = TYPES[oldmap[i][j]].color
