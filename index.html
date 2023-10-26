@@ -4,7 +4,7 @@
     <script src="build.js"></script>
 </head>
 <body>
-    <canvas id="canvas" style="width: 512px; height: 512px;" width="512" height="512"></canvas>
+    <canvas id="canvas" style="width: 512px; height: 512px; image-rendering: pixelated;" width="16" height="16"></canvas>
 
     <script></script>
 
@@ -66,13 +66,13 @@
             
 
         let size = Number(document.getElementById('size').value)
-        canvas.style = `width: ${WIDTH * size}px; height: ${HEIGHT * size}px;`
-        canvas.width = WIDTH * size
-        canvas.height = HEIGHT * size
+        canvas.style = `width: ${WIDTH * size}px; height: ${HEIGHT * size}px; image-rendering: pixelated;`
+        canvas.width = WIDTH
+        canvas.height = HEIGHT
         for(let i = 0; i < HEIGHT; i++){
                 for(let j = 0; j < WIDTH; j++){
                     ctx.fillStyle = TYPES[oldmap[i][j]].color
-                    ctx.fillRect(j * (canvas.width / WIDTH), i * (canvas.height / HEIGHT), canvas.width / WIDTH, canvas.height / HEIGHT)
+                    ctx.fillRect(j * (canvas.width / WIDTH), i * (canvas.height / HEIGHT), 1, 1)
                 }
             }
         ">Apply</button>
