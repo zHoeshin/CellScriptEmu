@@ -30,7 +30,6 @@ function resizeMaps(){
     map.length = HEIGHT
     oldmap.length = HEIGHT
 
-    console.log(map.length, map[0].length, WIDTH)
     for(let i = 0; i < map.length; i++){
         while(map[i].length < WIDTH){
             map[i].push(DEFAULTCELLTYPE)
@@ -179,13 +178,9 @@ function STEP(){
 document.getElementById('canvas').onclick = function(e) {
     // e = Mouse click event.
 
-    console.warn(e)
-
     var rect = e.target.getBoundingClientRect();
     var x = Math.floor((e.clientX - rect.left) / (rect.width / WIDTH)); //x position within the element.
     var y = Math.floor((e.clientY - rect.top) / (rect.height / HEIGHT));  //y position within the element.
-
-    console.log(x, y)
 
     oldmap[y][x] = selected
 
