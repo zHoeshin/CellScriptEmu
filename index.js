@@ -118,13 +118,13 @@ class Element{
         return -1
     }
 }
-
+/*
 const LIVE = new Element("#AEAEBB", "LIVE", [new RuleSimple(1, 2, 3, 0, undefined , isReversed = true)])
 const DEAD = new Element("#161616", "DEAD", [new RuleSimple(1, 3, 3, 1)])
 const WIRE = new Element("#565656", "WIRE", [new RuleSimple(3, 1, 2, 3)])
 const WIREACRIVE = new Element("#EA5656", "WIREACTIVE", [new RuleAction(4)])
 const WIRETRACE = new Element("#5656AE", "WIRETRACE", [new RuleAction(2)])
-
+*/
 let TYPES = []
 
 const canvas = document.getElementById("canvas");
@@ -136,7 +136,7 @@ function prepare(){
             if(TYPES.length <= DEFAULTCELLTYPE) break
 
             ctx.fillStyle = TYPES[DEFAULTCELLTYPE].color;
-            ctx.fillRect(i * (canvas.width / WIDTH), j * (canvas.height / HEIGHT), canvas.width / WIDTH, canvas.height / HEIGHT)
+            ctx.fillRect(i, j, 1, 1)
         }
     }
 }
@@ -144,13 +144,28 @@ function prepare(){
 function STEP(){
     for(let i = 0; i < HEIGHT; i++){
         for(let j = 0; j < WIDTH; j++){
-            let nMap = getNeighborCells(i, j, WORLDWRAP)
+            //let nMap = getNeighborCells(i, j, WORLDWRAP)
+            let nMap = []
+            for(let is = -1; is < 2; is++){
+                for(let js = -1; js < 2; js++){
+                    if(is == 0 & js == 0) continue
+
+                    if(WORLDWRAP == false && is+i < 0) {nMap.push(DEFAULTCELLTYPE); continue}
+                    if(WORLDWRAP == false && is+i >= WIDTH) {nMap.push(DEFAULTCELLTYPE); continue}
+                    if(WORLDWRAP == false && js+j < 0) {nMap.push(DEFAULTCELLTYPE); continue}
+                    if(WORLDWRAP == false && js+j >= HEIGHT) {nMap.push(DEFAULTCELLTYPE); continue}
+
+                    nMap.push(oldmap[(is + i + HEIGHT)%HEIGHT][(js + j + WIDTH)%WIDTH])
+                }
+            }
             if(oldmap[i][j] >= TYPES.length) continue
             let newtype = TYPES[oldmap[i][j]].check(nMap, [i, j])
             if (newtype == -1) newtype = oldmap[i][j]
 
-            ctx.fillStyle = TYPES[newtype].color
-            ctx.fillRect(j * (canvas.width / WIDTH), i * (canvas.height / HEIGHT), canvas.width / WIDTH, canvas.height / HEIGHT)
+            if(newtype != oldmap[i][j]){
+                ctx.fillStyle = TYPES[newtype].color
+                ctx.fillRect(j, i, 1, 1)
+            }
 
             map[i][j] = newtype
         }
@@ -163,11 +178,14 @@ function STEP(){
 
 document.getElementById('canvas').onclick = function(e) {
     // e = Mouse click event.
+
+    console.warn(e)
+
     var rect = e.target.getBoundingClientRect();
     var x = Math.floor((e.clientX - rect.left) / (rect.width / WIDTH)); //x position within the element.
     var y = Math.floor((e.clientY - rect.top) / (rect.height / HEIGHT));  //y position within the element.
-    
-    console.log(rect, x, y)
+
+    console.log(x, y)
 
     oldmap[y][x] = selected
 
@@ -175,7 +193,7 @@ document.getElementById('canvas').onclick = function(e) {
     const ctx = canvas.getContext("2d");
 
     ctx.fillStyle = TYPES[selected].color;
-    ctx.fillRect(x * (rect.width / WIDTH), y * (rect.height / HEIGHT), rect.width / WIDTH, rect.height / HEIGHT)
+    ctx.fillRect(x, y, 1, 1)
 }
 
 function update(){
@@ -279,7 +297,7 @@ element ChargeTrace {
         for(let j = 0; j < WIDTH; j++){
             oldmap[i][j] = DEFAULTCELLTYPE
             ctx.fillStyle = TYPES[DEFAULTCELLTYPE].color;
-            ctx.fillRect(i * (rect.width / WIDTH), j * (rect.height / HEIGHT), rect.width / WIDTH, rect.height / HEIGHT)
+            ctx.fillRect(i, j, 1, 1)
         }
     }
 }
